@@ -1,0 +1,57 @@
+---
+title: "Geostatistics with genetic data : the R package `ggene` (part 3: anisotropy)"
+slug: "ggene4"
+author: "Jean-Pierre Rossi"
+date: 2016-09-04T21:13:14-05:00
+categories: ["R"]
+tags: ["ggene", "genetic", "geostatistics", "anisotropy"]
+---
+
+
+
+<p>This third post about geostatistical analysis of genetic data deals with anisotropy. Anisotropy is the property of being directionally dependent. It occurs if the spatial pattern differs, when measured along different axes, either in extent or intensity (Goovaerts, 1997).</p>
+<p>We illustrate here how the package <code>ggene</code> can be used to compute directional variograms and variogram maps.</p>
+<div id="directional-variograms" class="section level3">
+<h3>Directional variograms</h3>
+<p><code>svariog</code> computes omnidirectional variograms by default. The arguments <code>direction</code>, <code>tolerance</code> and <code>unit.angle</code> define the main direction, the tolerance and the unit of measure for the angle.</p>
+<p>We use the simulated dataset <code>aniso</code> to illustrate this feature :</p>
+<pre class="r"><code>data(aniso)
+va &lt;- svariog(X=aniso, plot=TRUE)</code></pre>
+<p><img src="/post/2016-09-04-ggene04_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>The omni-directional variogram reveals a clear spatial genetic structure. We then consider 4 directions : 0, 45, 90 and 135 degrees and use a tolerance of 22.5° in each case.</p>
+<p>Does the spatial genetic structure differ according to direction?</p>
+<pre class="r"><code># compute variograms in different directions
+d0_225 &lt;- svariog(X=aniso,direction=0, tolerance=22.5, unit.angle=&quot;degrees&quot;)
+d45_225 &lt;- svariog(X=aniso,direction=45, tolerance=22.5, unit.angle=&quot;degrees&quot;)
+d90_225 &lt;- svariog(X=aniso,direction=90, tolerance=22.5, unit.angle=&quot;degrees&quot;)
+d135_225 &lt;- svariog(X=aniso,direction=135, tolerance=22.5, unit.angle=&quot;degrees&quot;)</code></pre>
+<p>We then plot the resulting variograms:</p>
+<pre class="r"><code>plot(va$svario$u, va$svario$v, type=&quot;b&quot;, ylim=range(c(va$svario$v, d0_225$svario$v, d45_225$svario$v, d90_225$svario$v, d135_225$svario$v)) , xlab=&quot;distance&quot;, ylab=&quot;semivariance&quot;)
+
+points(d0_225$svario$u, d0_225$svario$v, type=&quot;b&quot;, lty=2)
+points(d45_225$svario$u, d45_225$svario$v, type=&quot;b&quot;, col=&quot;red&quot;, lty=2)
+points(d90_225$svario$u, d90_225$svario$v, type=&quot;b&quot;, col=&quot;blue&quot;, lty=2)
+points(d135_225$svario$u, d135_225$svario$v, type=&quot;b&quot;, col=&quot;green&quot;, lty=2)
+
+legend(&quot;topleft&quot;, legend=c(&quot;omnidirectional&quot;, expression(0 * degree), 
+ expression(45 * degree), expression(90 * degree), 
+ expression(135 * degree)), lty=c(1,2,2,2,2,2), 
+ col=c(&quot;black&quot;,&quot;black&quot;,&quot;red&quot;,&quot;blue&quot;,&quot;green&quot;), bty=&quot;n&quot;)</code></pre>
+<p><img src="/post/2016-09-04-ggene04_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>The variogram computed in the direction 45° differs from the omni-directional variogram as well as from the other directional variograms.</p>
+</div>
+<div id="variogram-maps" class="section level1">
+<h1>Variogram maps</h1>
+<p>Directional variograms are useful to describe the spatial variation in a given direction but variogram maps are more efficient to search for anisotropy when no <em>a priori</em> knowledge of the direction itself is available (Isaaks &amp; Srivastava, 1989; Goovaerts, 1997).</p>
+<p>In <code>ggene</code> variogram maps are computed using the function <code>svarmap</code>.</p>
+<pre class="r"><code>data(aniso)
+map &lt;- svarmap(X=aniso,cutoff=20, width=1)
+plot(map)</code></pre>
+<p><img src="/post/2016-09-04-ggene04_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>There is a clear directionality in the semivariance values that are lower in the direction 45°.</p>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<p>Goovaerts, P., 1997. Geostatistics for Natural Resources Evaluation. Oxford University Press</p>
+<p>Isaaks, E.H., Srivastava, R.M., 1989. Applied geostatistics. Oxford University Press.</p>
+</div>

@@ -1,0 +1,34 @@
+---
+title: "Google Street View to study species geographical distribution"
+slug: "google"
+author: "Jean-Pierre Rossi"
+date: 2013-10-10T21:13:14-05:00
+categories: ["ecology"]
+tags: ["Species Distribution", "Google", "Forest insect"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+# Google street view
+This post is about the way we could use the Google street view (GSV) data base to gather data allowing to describe species geographical distribution. There have been some attempts at using the panoramic imagery provided by GSV in social science [1] and preventive medicine [2] but to my knowledge, very few ecological applications have been published so far.
+
+![A pine processionary moth silk nest. Photo by Jérôme Rousselet.](/img/2013-10-10/ppmnest.jpg)
+
+Obviously, only organisms that can be reliably detected by road sampling can be assessed using street imagery. We have recently published our first results [Rousselet et al 2013 PLOS ONE e74918: http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0074918] showing how the GSV imagery could be used to perform in silico sampling of species occurrences. Our biological model was the pine processionary moth Thaumetopoea pityocampa, a species easily visible from the roads during winter because it builds white silk nests in its host tree foliage. Readers can get the paper for free from the journal that is an open access publication.
+
+# Reference:
+Rousselet, J., Imbert, C.-E., Dekri, A., Garcia, J., Goussard, F., Vincent, B., Denux, O., Robinet, C., Dorkeld, F., Roques, A., Rossi, J.-P., 2013, Assessing Species Distribution Using Google Street View: A Pilot Study with the Pine Processionary Moth, PLoS One 8(10):e74918.
+
+# Abstract
+Mapping species spatial distribution using spatial inference and prediction requires a lot of data. Occurrence data are generally not easily available from the literature and are very time-consuming to collect in the field. For that reason, we designed a survey to explore to which extent large-scale databases such as Google maps and Google street view could be used to derive valid occurrence data. We worked with the Pine Processionary Moth (PPM) Thaumetopoea pityocampa because the larvae of that moth build silk nests that are easily visible. The presence of the species at one location can therefore be inferred from visual records derived from the panoramic views available from Google street view. We designed a standardized procedure allowing evaluating the presence of the PPM on a sampling grid covering the landscape under study. The outputs were compared to field data. We investigated two landscapes using grids of different extent and mesh size. Data derived from Google street view were highly similar to field data in the large-scale analysis based on a square grid with a mesh of 16 km (96% of matching records). Using a 2 km mesh size led to a strong divergence between field and Google-derived data (46% of matching records). We conclude that Google database might provide useful occurrence data for mapping the distribution of species which presence can be visually evaluated such as the PPM. However, the accuracy of the output strongly depends on the spatial scales considered and on the sampling grid used. Other factors such as the coverage of Google street view network with regards to sampling grid size and the spatial distribution of host trees with regards to road network may also be determinant.
+
+
+
+1. Odgers CL, Caspi A, Bates CJ, Sampson RJ, Moffitt TE (2012) Systematic social observation of children’s neighborhoods using Google street view: a reliable and cost-effective method. J Child Psychol Psychiatry 53: 1009-1017.
+2. Rundle AG, Bader MDM, Richards CA, Neckerman KM, Teitler JO (2011) Using Google street view to audit neighborhood environments. Am J Prev Med 40: 94-100.
+
+
+
+

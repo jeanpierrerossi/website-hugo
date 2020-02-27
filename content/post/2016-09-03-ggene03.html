@@ -1,0 +1,40 @@
+---
+title: "Managing missing values in `ggene`"
+slug: "ggene3"
+author: "Jean-Pierre Rossi"
+date: 2016-09-03T21:13:14-05:00
+categories: ["R"]
+tags: ["ggene", "genetic", "geostatistics"]
+---
+
+
+
+<p>Missing values are a big pain in the arse because they are so common in microsatellite datasets that removing them sometimes amounts to loose all the information (individuals or alleles).</p>
+<p><code>ggene</code> cannot handle NAs and thus users must remove individuals/alleles with missing data or convert them to something… else!</p>
+<p>One common strategy is to replace NAs by the mean value of the corresponding column or by 0 (see the package adegenet). I won’t discuss these options and simply provide a simple solution to users who cannot remove NAs in their data and have to replace them.</p>
+<p>We define below two functions <code>NAtoMean</code> and <code>NAto0</code> which replace NA by the mean of the column (allele) or by 0, respectively.</p>
+<pre class="r"><code>NAtoMean &lt;- function(x){
+    x[is.na(x)] &lt;- mean(x, na.rm = TRUE)
+    return(x)}
+
+NAto0 &lt;- function(x){ 
+    x[is.na(x)] &lt;- 0
+    return(x)}</code></pre>
+<p>Now we create a missing data in the <code>$tab</code> of a ggene object:</p>
+<pre class="r"><code>data(crypho)
+crypho$tab[1,1]
+## [1] 0
+crypho$tab[1,1] &lt;- NA
+crypho$tab[1,1]
+## [1] NA</code></pre>
+<p>If we try to compute the variogram with this altered dataset we get an error message:</p>
+<pre class="r"><code>var &lt;- svariog(crypho, plot=TRUE)
+## Error in FUN(X[[i]], ...): NA/NaN/Inf dans un appel à une fonction externe (argument 4)</code></pre>
+<p>Replacing NAs by the mean of the column in the data table is achieved using <code>apply</code>:</p>
+<pre class="r"><code>crypho$tab &lt;- apply(X=crypho$tab, MARGIN=2, FUN=NAtoMean)
+crypho$tab[1,1]
+## [1] 0.2872727</code></pre>
+<p>The <code>svariog</code> can now compute the variogram:</p>
+<pre class="r"><code>var &lt;- svariog(crypho, plot=TRUE)</code></pre>
+<p><img src="/post/2016-09-03-ggene03_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><code>NAtoMean</code> and <code>NAto0</code> can easily be customised.</p>

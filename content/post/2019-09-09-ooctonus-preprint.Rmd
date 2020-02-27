@@ -1,0 +1,31 @@
+---
+title: "Un pas vers le biocontrôle des vecteurs de Xylella fastidiosa"
+slug: "ooctonuspreprint"
+author: "Jean-Pierre Rossi"
+date: 2019-09-09T21:13:14-05:00
+categories: ["Santé des plantes"]
+tags: ["Ooctonus vulgatus", "Xylella fastidiosa", "biocontrôle", "insecte vecteur", "Philaenus spumarius"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+Dans le cadre des travaux de notre équipe (CBGP-Inra) sur la bactérie *Xylella fastidiosa*, nous venons de déposer un manuscrit pour publication dans la revue [PeerJ](https://peerj.com/benefits/). Cette revue étant gratuite, notre travail est accessible à tous les lecteurs intéressés.
+
+L'autre avantage de PeerJ est que les manuscrits soumis pour évaluation sont disponibles avant d'avoir été évalués par la revue. Vous pouvez ainsi lire l'article et prendre connaissance de nos conclusions dès maintenant sans attendre la publication qui prend parfois des mois.
+
+L’article porte sur *Ooctonus vulgatus*, une micro-guêpe de la famille des Mymaridae qui parasite les oeufs du principal vecteur de la bactérie *Xylella fastidiosa* en Europe, le cercope des prés *Philaenus spumarius*. 
+
+```{r, out.width = "500px", echo=F, warning=F, error=F, message=F, fig.cap = "*Ooctonus vulgatus* (Hymenoptera, Mymaridae). Photo Jean-Yves Rasplus, Inra."}
+knitr::include_graphics("/img/2019-09-09-ooctonus-preprint/Ooctonus-vulgatus.png")
+```
+
+Nous avons observé de forts taux de parasitisme en Corse et nos analyses montrent que les conditions climatiques favorables à *O. vulgatus* se rencontrent dans de larges zones en Europe. Cet insecte pourrait ainsi être utilisé un peu partout pour réguler le cercope des prés. L’article détaille également les critères morphologiques permettant d’identifier le parasitoïde et contient une analyse génétique des spécimens récoltés en Corse.
+
+Ce travail ne constitue cependant qu’un premier pas vers une utilisation effective d’*O. vulgatus* en biocontrôle. Il faut avant cela réaliser différentes études de recherche et développement afin notamment de vérifier l’efficacité du contrôle à large échelle et étudier sa mise en oeuvre.  
+
+
+**Référence**
+
+Mesmin X, Chartois M, Genson G, Rossi J, Cruaud A, Rasplus J. 2019. *Ooctonus vulgatus* (Hymenoptera, Mymaridae), a potential biocontrol agent to reduce populations of *Philaenus spumarius* (Hemiptera, Aphrophoridae) the main vector of *Xylella fastidiosa* in Europe. PeerJ Preprints 7:e27941v1 https://doi.org/10.7287/peerj.preprints.27941v1

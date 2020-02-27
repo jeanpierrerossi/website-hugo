@@ -1,0 +1,70 @@
+---
+title: "Geostatistics with genetic data : the R package `ggene` (part 2: variogram envelop)"
+slug: "ggene2"
+author: "Jean-Pierre Rossi"
+date: 2016-09-02T21:13:14-05:00
+categories: ["R"]
+tags: ["ggene", "genetic", "geostatistics", "variogram"]
+---
+
+
+
+<p>In this second item of a set of posts introducing the package <code>ggene</code>, we address how departure form spatial randomness can be examined.</p>
+<div id="variogram-envelop" class="section level1">
+<h1>Variogram envelop</h1>
+<p>The function <code>randsvariog</code> allows to compute the variogram envelope by means of randomizations. Each randomization corresponds to a random reallocation of genotypes among individuals followed by the recomputation of the variogram. Readers are referred to Legendre and Legendre (1998) for details about randomization tests in the context of spatial analyses. <code>randsvariog</code> randomizes the genetic data associated to each individual but genomes are not changed, only their spatial distribution are permuted between individuals, hence the sampling design is kept unchanged.</p>
+</div>
+<div id="first-example" class="section level1">
+<h1>First example</h1>
+<p>We illustrate this feature using the dataset <code>larix1350</code> where a set of 189 trees were genotyped (Nardin et al. 2015). Can we detect a spatial structure within this dataset?</p>
+<p>First we load the dataset and have a look at the sampling design.</p>
+<pre class="r"><code>data(larix1300)
+# check sample spatial features
+plot(larix2300$coord[,1],larix2300$coord[,2], asp=1, xlab=&quot;x&quot;, ylab=&quot;y&quot;)</code></pre>
+<p><img src="/post/2016-09-02-ggene02_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Then we compute the variogram and plot it. The variogram shows very little structuration, if any.</p>
+<pre class="r"><code># compute variogram
+va &lt;- svariog(X=larix1350, uvec=distlag(dist=larix1350$coord, dmin=0, distance.lag=3), plot=TRUE)</code></pre>
+<p><img src="/post/2016-09-02-ggene02_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>We now compute the statistical envelop using <code>randsvariog</code> with a limited number of randomizations in this simple example (a large number is otherwise necessary).</p>
+<pre class="r"><code># compute statistical envelope
+env &lt;- randsvariog(var=va, X=larix1350, nsim=30, bounds=c(0.025, 0.975), save.sim=FALSE)
+## ..............................
+## done
+
+# plot results
+plot(env$svario$u, env$svario$v, ylim=range(env$env), xlab=&quot;distance (m)&quot;,
+     ylab=&quot;semivariance&quot;)
+points(env$svario$u, env$env[,1], type=&quot;l&quot;)
+points(env$svario$u, env$env[,2], type=&quot;l&quot;)</code></pre>
+<p><img src="/post/2016-09-02-ggene02_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>The statistical envelope indicates that most of the semivariance estimates lie between the 0.025 and 0.975 quantiles showing the absence of spatial genetic structure.</p>
+</div>
+<div id="second-example" class="section level1">
+<h1>Second example</h1>
+<p>In this second example we perform similar analyses using the dataset <code>larix2300</code>:</p>
+<pre class="r"><code>data(larix2300)
+
+# compute variogram
+va &lt;- svariog(X=larix2300, uvec=distlag(dist=larix2300$coord, dmin=0,
+  distance.lag=3), plot=FALSE)
+
+# compute statistical envelope
+env &lt;- randsvariog(var=va, X=larix2300, nsim=30, bounds=c(0.025, 0.975),
+  save.sim=FALSE)
+## ..............................
+## done
+
+# plot results
+plot(env$svario$u, env$svario$v, ylim=range(env$env), xlab=&quot;distance (m)&quot;,
+     ylab=&quot;semivariance&quot;)
+points(env$svario$u, env$env[,1], type=&quot;l&quot;)
+points(env$svario$u, env$env[,2], type=&quot;l&quot;)</code></pre>
+<p><img src="/post/2016-09-02-ggene02_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>In this case, the variogram indicates a clear departure from spatial randomness.</p>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<p>Legendre, P., Legendre, L., 2012. Numerical Ecology. Elsevier.<br /></p>
+<p>Nardin, M., Musch, B., Rousselle, Y., Guérin, V., Sanchez, L., Rossi, J.-P., Gerber, S., Marin, S., Pâques, L.E., Rozenberg, P., 2015. Genetic differentiation of European larch along an altitudinal gradient in the French Alps. Annals of Forest Science 72, 517-527.</p>
+</div>

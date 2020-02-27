@@ -1,0 +1,48 @@
+---
+title: "Quels packages R installer avant l'école chercheur 'Paysage et santé des plantes' ?"
+slug: "installecp2complement"
+author: "Jean-Pierre Rossi"
+date: 2019-08-29T21:14:14-05:00
+categories: ["R"]
+tags: ["package R", "landscape", "ecpaysage2"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+Vous allez participer à l'école chercheur ["Paysage et santé des plantes : Analyser, comprendre et modéliser les processus écologiques en jeu"](http://jobs.inra.fr/Evenements/Ecole-chercheurs-paysage).
+
+Il est fortement conseillé de mettre à jour le logiciel R pour disposer de la [version 3.6.1 (Action of the Toes)](https://www.r-project.org/)
+
+Nous vous conseillons également d'installer ou de mettre à jour les packages R suivants :
+
+- `ade4`
+- `ape`
+- `briskaR`
+- `dismo`
+- `caret`
+- `FeedbackTS`
+- `gbm`
+- `geoR`
+- `ggplot2`
+- `gstat`
+- `landscapemetrics` 
+- `landscapeR`
+- `landsepi`
+- `MetaLandSim`
+- `NLMR`
+- `maptools`
+- `mvtnorm`
+- `plspm`
+- `RandomFields`
+- `raster`
+- `rgdal`
+- `SDMTools`
+- `sf`
+- `sp`
+- `splancs`
+
+Il est également nécessaire d'installer le package `ecpaysage2` développé pour l'école. Ceci est expliqué dans un [précédent billet](/2019/08/29/installecp2/).
+
+

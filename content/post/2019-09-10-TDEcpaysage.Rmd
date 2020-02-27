@@ -1,0 +1,19 @@
+---
+title: "Analyse quantitative du paysage sous R : TD de l'école chercheur 'Paysage et santé des plantes' en ligne"
+slug: "TDEcpaysage"
+author: "Jean-Pierre Rossi"
+date: 2019-09-10T21:14:14-05:00
+categories: ["R"]
+tags: ["cours", "landscape", "ecpaysage2", "quantitative analysis"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+Le fichier des travaux dirigés intitulé "Analyse quantitative du paysage sous R" proposé dans le cadre de l'école chercheur ["Paysage et santé des plantes : Analyser, comprendre et modéliser les processus écologiques en jeu"](http://jobs.inra.fr/Evenements/Ecole-chercheurs-paysage) (session d'octobre 2019) est disponible au bout  [du lien suivant](http://j.p.rossi.free.fr/pub/cours/TD_analyse_quant_paysagev07.html).
+
+Ce fichier sera peut-être mis-à-jour durant le mois de septembre. Vérifiez que vous disposez de la version la plus récente avant le début de l'école !
+
+Version mise en ligne le 23/09/2019 : v7 - TD_analyse_quant_paysagev07.html
+

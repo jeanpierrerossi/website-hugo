@@ -1,0 +1,81 @@
+---
+title: "Geostatistics with genetic data : the R package `ggene` (part 3: anisotropy)"
+slug: "ggene4"
+author: "Jean-Pierre Rossi"
+date: 2016-09-04T21:13:14-05:00
+categories: ["R"]
+tags: ["ggene", "genetic", "geostatistics", "anisotropy"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(ggene)
+```
+
+This third post about geostatistical analysis of genetic data deals with anisotropy. Anisotropy is the property of being directionally dependent. It occurs if the spatial pattern differs, when measured along different axes, either in extent or intensity (Goovaerts, 1997). 
+
+We illustrate here how the package `ggene` can be used to compute directional variograms and variogram maps. 
+
+### Directional variograms
+
+`svariog` computes omnidirectional variograms by default. The arguments `direction`, `tolerance` and `unit.angle` define the main direction, the tolerance and the unit of measure for the angle. 
+
+We use the simulated dataset `aniso` to illustrate this feature :
+
+```{r, message=FALSE, warning=FALSE}
+data(aniso)
+va <- svariog(X=aniso, plot=TRUE)
+```
+
+The omni-directional variogram reveals a clear spatial genetic structure. We then consider 4 directions : 0, 45, 90 and 135 degrees and use a tolerance of 22.5° in each case. 
+
+Does the spatial genetic structure differ according to direction?
+
+```{r, message=FALSE, warning=FALSE}
+# compute variograms in different directions
+d0_225 <- svariog(X=aniso,direction=0, tolerance=22.5, unit.angle="degrees")
+d45_225 <- svariog(X=aniso,direction=45, tolerance=22.5, unit.angle="degrees")
+d90_225 <- svariog(X=aniso,direction=90, tolerance=22.5, unit.angle="degrees")
+d135_225 <- svariog(X=aniso,direction=135, tolerance=22.5, unit.angle="degrees")
+```
+
+We then plot the resulting variograms:
+
+```{r, message=FALSE, warning=FALSE}
+plot(va$svario$u, va$svario$v, type="b", ylim=range(c(va$svario$v, d0_225$svario$v, d45_225$svario$v, d90_225$svario$v, d135_225$svario$v)) , xlab="distance", ylab="semivariance")
+
+points(d0_225$svario$u, d0_225$svario$v, type="b", lty=2)
+points(d45_225$svario$u, d45_225$svario$v, type="b", col="red", lty=2)
+points(d90_225$svario$u, d90_225$svario$v, type="b", col="blue", lty=2)
+points(d135_225$svario$u, d135_225$svario$v, type="b", col="green", lty=2)
+
+legend("topleft", legend=c("omnidirectional", expression(0 * degree), 
+ expression(45 * degree), expression(90 * degree), 
+ expression(135 * degree)), lty=c(1,2,2,2,2,2), 
+ col=c("black","black","red","blue","green"), bty="n")
+```
+
+The variogram computed in the direction 45° differs from the omni-directional variogram as well as from the other directional variograms.
+
+# Variogram maps
+
+Directional variograms are useful to describe the spatial variation in a given direction but variogram maps are more efficient to search for anisotropy when no *a priori* knowledge of the direction itself is available (Isaaks & Srivastava, 1989; Goovaerts, 1997).
+
+In `ggene` variogram maps are computed using the function `svarmap`. 
+
+```{r, message=FALSE, warning=FALSE}
+data(aniso)
+map <- svarmap(X=aniso,cutoff=20, width=1)
+plot(map)
+```
+
+There is a clear directionality in the semivariance values that are lower in the direction 45°.
+
+# References
+
+Goovaerts, P., 1997. Geostatistics for Natural Resources Evaluation. Oxford University Press
+
+Isaaks, E.H., Srivastava, R.M., 1989. Applied geostatistics. Oxford University Press.

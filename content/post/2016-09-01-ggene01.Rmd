@@ -1,0 +1,134 @@
+---
+title: "Geostatistics with genetic data : the R package ggene (part 1)"
+slug: "ggene1"
+author: "Jean-Pierre Rossi"
+date: 2016-09-01T21:13:14-05:00
+categories: ["R"]
+tags: ["ggene", "genetic", "geostatistics", "variogram"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+Geostatistics is a branch of statistics focusing on spatial and spatiotemporal analyses. It was originally developed in mining geology and slowly percolated in numerous fields of life sciences such as soil science, soil ecology, oceanography and many more.
+
+In 2005, Wagner et al. introduced the use of variogram (an important structure function in geostatistics) with microsatellite datasets but to our knowledge neither software nor R package were available to compute variograms or perform any of the main operations of geostatitics such as model fitting or anisotropy analysis.
+
+We therefore developed the package ggene. It was released in early June 2016 through R-Forge and is currently available from https://r-forge.r-project.org/R/?group_id=2143
+
+ggene allows the computation variogram of gene diversity and model fitting. In addition it offers two techniques to search for anisotropies in spatial genetic structure namely directional variograms and variogram maps. Both haploid and diploid datasets can be analysed and the package provides some functions allowing to weighting for repeated genotypes. 
+
+The purpose of the present post is to give an overview of the package and show how to install ggene. The package comes with 2 vignettes and several datasets that make learning easier if not attractive…
+
+# Downloading and installation
+
+At the present time, ggene is not available from R CRAN and the current version can be installed from the R-Forge repository.
+
+Mac OS users:
+```{r, eval=FALSE, message=FALSE, warning=FALSE}
+install.packages("ggene", repos="http://R-Forge.R-project.org", type="source")
+```
+
+Windows or Linux users:
+```{r, eval=FALSE, message=FALSE, warning=FALSE}
+install.packages("ggene", repos="http://R-Forge.R-project.org")
+```
+
+Once ggene is installed you can visualize the thematic documentation by typing in the R console:
+
+```{r, eval=FALSE, message=FALSE, warning=FALSE}
+library(ggene)
+vignette("ggene_introduction")
+vignette("ggene_datasets")
+```
+
+# Reading haploid dataset
+
+The chunk of code below shows how to read both coordinates and microsatellite data for an haploid dataset.
+
+```{r, message=FALSE, warning=FALSE}
+library(ggene)
+# read genetic data
+sim <- read.csv(system.file("extdata/sim_01.csv", package="ggene"), header=FALSE)
+# read spatial coordinates
+xy.sim <- read.csv(system.file("extdata/xysim_01.csv", package="ggene"), header=FALSE)
+# create a ggene object
+dat.sim <- tab2geo(X=sim, coord=xy.sim)
+```
+
+# Reading diploid dataset
+
+The function `gene2geo` operates the same way but relies on a `genind` object which are created with the package `adegenet` from various data input formats such as `genepop` or `genetix` (see the documentation of the package for details). *Note that `ggene` has no function allowing to read data directly from files.*
+
+Here is an example where we firstly read the genetic data from a file in `genepop`   format:
+
+```{r, message=FALSE, warning=FALSE}
+library(adegenet)
+dat <- read.genepop(system.file("extdata/sim_03.gen", package="ggene"), ncode = 3)
+```
+
+The resulting object has various characteristics:
+
+```{r, message=FALSE, warning=FALSE}
+dat
+```
+
+There are 625 individuals. 
+
+Let’s now read the geographic coordinates:
+
+```{r, message=FALSE, warning=FALSE}
+xy <- read.csv(system.file("extdata/xysim_01.csv", package="ggene"), header=FALSE)
+dim(xy)
+```
+
+The package `ggene` requires objects of class `ggene`  that are created using the function `gene2geo`:
+
+```{r, message=FALSE, warning=FALSE}
+data <- gene2geo(X=dat, coord=xy)
+class(data)
+```
+
+# Your first variogram!
+
+`svariog` computes the variogram for the gene diversity and also returns the locus-by-locus semivariance and the conventional estimator of the gene diversity (Wagner et al. 2005). 
+
+The chunks of code below shows how to compute the variogram for the `larix` dataset (Nardin et al. 2015) using default options. It is good practice to check the sampling scheme before any analysis:
+
+```{r, message=FALSE, warning=FALSE}
+data(larix2300)
+# check sample spatial features
+plot(larix2300$coord[,1],larix2300$coord[,2], asp=1, xlab="x", ylab="y")
+```
+
+If `plot` is set to `TRUE` `svariog` produces a plot of the variogram. The dashed line shows the conventional estimator of the gene diversity.
+
+```{r, message=FALSE, warning=FALSE}
+# compute variogram
+va <- svariog(X=larix2300, plot=TRUE)
+```
+
+The distance interval can easily be changed to explore how the variogram is affected. Increasing to distance interval tends to smooth out the signal and to better recognize the large-scale patterns. This is easily done using the function `distlag`:
+
+```{r, message=FALSE, warning=FALSE}
+d <- distlag(dist=larix2300$coord, dmin=0, distance.lag=1)
+d
+```
+
+The variogram is computed with `uvec=d`:
+
+```{r, message=FALSE, warning=FALSE}
+va <- svariog(X=larix2300, uvec=d, plot=TRUE)
+```
+
+**The resulting variogram reveals a very clear spatial genetic structure mostly occuring at distances < ca. 18 m.**
+
+# References:
+
+Nardin, M., Guerin, V., Musch, B., Rousselle, Y., Sanchez, L., Rossi, J.-P., Gerber, S., Paques, L., Rozenberg, P. 2015. Genetic differentiation of European larch along an altitudinal gradient in the French Alps. Annals of Forest Science 72, 517-527.
+
+Journel, A.G., and C.J. Huijbregts. 1978. Mining Geostatistics. Academic Press.
+
+Wagner, H.H., R. Holderegger, S. Werth, F. Gugerli, S.E. Hoebee, and C. Scheidegger. 2005. Variogram Analysis of the Spatial Genetic Structure of Continuous Populations Using Multilocus Microsatellite Data. Genetics 169: 1739–52.
+

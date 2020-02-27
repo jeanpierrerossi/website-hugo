@@ -1,0 +1,64 @@
+---
+title: "Managing missing values in `ggene`"
+slug: "ggene3"
+author: "Jean-Pierre Rossi"
+date: 2016-09-03T21:13:14-05:00
+categories: ["R"]
+tags: ["ggene", "genetic", "geostatistics"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(ggene)
+```
+
+Missing values are a big pain in the arse because they are so common in microsatellite datasets that removing them sometimes amounts to loose all the information (individuals or alleles).
+
+`ggene` cannot handle NAs and thus users must remove individuals/alleles with missing data or convert them to something… else!
+
+One common strategy is to replace NAs by the mean value of the corresponding column or by 0 (see the package adegenet). I won’t discuss these options and simply provide a simple solution to users who cannot remove NAs in their data and have to replace them.
+
+We define below two functions `NAtoMean` and `NAto0` which replace NA by the mean of the column (allele) or by 0, respectively.
+
+```{r, message=FALSE, warning=FALSE}
+NAtoMean <- function(x){
+	x[is.na(x)] <- mean(x, na.rm = TRUE)
+	return(x)}
+
+NAto0 <- function(x){ 
+	x[is.na(x)] <- 0
+	return(x)}
+```
+
+Now we create a missing data in the `$tab` of a ggene object:
+
+```{r, message=FALSE, warning=FALSE}
+data(crypho)
+crypho$tab[1,1]
+crypho$tab[1,1] <- NA
+crypho$tab[1,1]
+```
+
+If we try to compute the variogram with this altered dataset we get an error message:
+
+```{r, error=TRUE, message=T, warning=T}
+var <- svariog(crypho, plot=TRUE)
+```
+
+Replacing NAs by the mean of the column in the data table is achieved using `apply`: 
+
+```{r, message=FALSE, warning=FALSE}
+crypho$tab <- apply(X=crypho$tab, MARGIN=2, FUN=NAtoMean)
+crypho$tab[1,1]
+```
+
+The `svariog` can now compute the variogram:
+
+```{r, message=FALSE, warning=FALSE}
+var <- svariog(crypho, plot=TRUE)
+```
+
+`NAtoMean` and `NAto0` can easily be customised.

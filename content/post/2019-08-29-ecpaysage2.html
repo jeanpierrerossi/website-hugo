@@ -1,0 +1,20 @@
+---
+title: "Installer le package R ecpaysage2"
+slug: "installecp2"
+author: "Jean-Pierre Rossi"
+date: 2019-08-29T21:13:14-05:00
+categories: ["R"]
+tags: ["package R", "landscape", "ecpaysage2"]
+---
+
+
+
+<p>Le package <code>ecpaysage2</code> a été développé spécialement pour l’école chercheur intitulée <a href="http://jobs.inra.fr/Evenements/Ecole-chercheurs-paysage">“Paysage et santé des plantes : Analyser, comprendre et modéliser les processus écologiques en jeu”</a>.</p>
+<p>Le package contient des données qui seront utilisées durant l’école ainsi qu’une vignette fournissant des informations utiles.</p>
+<p>Ce billet explique comment installer le package à partir du site <a href="https://r-forge.r-project.org/">R-Forge</a></p>
+<p>Dans la console R tapez :</p>
+<pre class="r"><code>install.packages(&quot;ecpaysage2&quot;, repos=&quot;http://R-Forge.R-project.org&quot;)</code></pre>
+<p>Après avoir chargé <code>ecpaysage2</code> vous aurez accès à la vignette en tapant :</p>
+<pre class="r"><code>library(ecpaysage2)
+vignette(package=&quot;ecpaysage2&quot;)
+vignette(&#39;ecpaysage2_intro&#39;)</code></pre>
